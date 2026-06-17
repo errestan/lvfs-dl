@@ -14,7 +14,7 @@ import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta
 from pathlib import Path
 from urllib.parse import urlparse
-from urllib.request import urlopen, urlretrieve
+from urllib.request import urlretrieve
 
 METADATA_URL = "https://cdn.fwupd.org/downloads/firmware.xml.gz"
 CACHE_DIR = Path.home() / ".cache" / "lvfs-dl"
@@ -25,6 +25,7 @@ CACHE_MAX_AGE = timedelta(hours=24)
 # ---------------------------------------------------------------------------
 # Metadata cache
 # ---------------------------------------------------------------------------
+
 
 def _needs_refresh() -> bool:
     if not METADATA_CACHE.exists():
@@ -59,6 +60,7 @@ def fetch_metadata(force: bool = False) -> None:
 # ---------------------------------------------------------------------------
 # XML parsing
 # ---------------------------------------------------------------------------
+
 
 def _text(el, tag: str) -> str:
     child = el.find(tag)
@@ -131,13 +133,14 @@ def parse_metadata() -> list[dict]:
 # Search
 # ---------------------------------------------------------------------------
 
+
 def search(packages: list[dict], query: str) -> list[dict]:
     q = query.lower()
     results = []
     for pkg in packages:
-        haystack = " ".join([
-            pkg["name"], pkg["vendor"], pkg["summary"], pkg["id"]
-        ]).lower()
+        haystack = " ".join(
+            [pkg["name"], pkg["vendor"], pkg["summary"], pkg["id"]]
+        ).lower()
         # Require all whitespace-separated tokens to match
         if all(token in haystack for token in q.split()):
             results.append(pkg)
@@ -147,6 +150,7 @@ def search(packages: list[dict], query: str) -> list[dict]:
 # ---------------------------------------------------------------------------
 # Display
 # ---------------------------------------------------------------------------
+
 
 def _fmt_size(n: int) -> str:
     if n <= 0:
@@ -193,6 +197,7 @@ def _pick(prompt: str, count: int, default: int = 1) -> int | None:
 # Download
 # ---------------------------------------------------------------------------
 
+
 def _sha256_file(path: Path) -> str:
     h = hashlib.sha256()
     with open(path, "rb") as fh:
@@ -238,6 +243,7 @@ def download_firmware(pkg: dict, release: dict, dest_dir: Path) -> Path | None:
 # Interactive selection
 # ---------------------------------------------------------------------------
 
+
 def interactive_select(results: list[dict]) -> tuple[dict, dict] | tuple[None, None]:
     choice = _pick(f"Select package [1–{len(results)}] (q=quit): ", len(results))
     if choice is None:
@@ -264,6 +270,7 @@ def interactive_select(results: list[dict]) -> tuple[dict, dict] | tuple[None, N
 # Entry point
 # ---------------------------------------------------------------------------
 
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Browse and download firmware from the Linux Vendor Firmware Service.",
@@ -275,12 +282,14 @@ def main() -> None:
         help='Search term, e.g. "Dell Precision" or "Lenovo ThinkPad BIOS"',
     )
     parser.add_argument(
-        "--refresh", "-r",
+        "--refresh",
+        "-r",
         action="store_true",
         help="Force re-download of metadata even if the cache is fresh",
     )
     parser.add_argument(
-        "--output", "-o",
+        "--output",
+        "-o",
         default=".",
         metavar="DIR",
         help="Directory in which to save downloaded firmware (default: current dir)",
@@ -294,7 +303,9 @@ def main() -> None:
         query = args.query
     else:
         try:
-            query = input('\nSearch (e.g. "Dell Precision", "Lenovo", "BIOS"): ').strip()
+            query = input(
+                '\nSearch (e.g. "Dell Precision", "Lenovo", "BIOS"): '
+            ).strip()
         except (EOFError, KeyboardInterrupt):
             print()
             sys.exit(0)

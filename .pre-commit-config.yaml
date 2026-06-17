@@ -1,0 +1,23 @@
+# Pre-commit hooks for lvfs-dl.
+# Install once with:  pre-commit install
+# Run on demand with: pre-commit run --all-files
+# Bump pinned revisions with: pre-commit autoupdate
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: check-added-large-files
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.4
+    hooks:
+      # Lint (with autofix), then format.
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
