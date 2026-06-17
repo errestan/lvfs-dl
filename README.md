@@ -13,22 +13,28 @@ and filtering happen offline without repeated round-trips to the LVFS servers.
 
 ## Installation
 
+Install from a checkout with `pip`:
+
 ```sh
 git clone https://github.com/youruser/lvfs-dl.git
 cd lvfs-dl
-chmod +x lvfs-dl.py
+pip install .
 ```
 
-Optionally symlink the script onto your `PATH`:
+This installs an `lvfs-dl` command onto your `PATH`. To install in editable
+mode for development, use `pip install -e .` instead.
+
+It is recommended to install with [`pipx`](https://pypa.github.io/pipx/) to keep
+the tool isolated in its own environment:
 
 ```sh
-ln -s "$PWD/lvfs-dl.py" ~/.local/bin/lvfs-dl
+pipx install .
 ```
 
 ## Usage
 
 ```
-lvfs-dl.py [-h] [--refresh] [--output DIR] [query]
+lvfs-dl [-h] [--refresh] [--output DIR] [query]
 ```
 
 | Argument | Description |
@@ -42,37 +48,37 @@ lvfs-dl.py [-h] [--refresh] [--output DIR] [query]
 Search for Dell Precision firmware:
 
 ```sh
-python3 lvfs-dl.py "Dell Precision"
+lvfs-dl "Dell Precision"
 ```
 
 Narrow the search to a specific model:
 
 ```sh
-python3 lvfs-dl.py "Precision 3660"
+lvfs-dl "Precision 3660"
 ```
 
 Search by vendor:
 
 ```sh
-python3 lvfs-dl.py Lenovo
+lvfs-dl Lenovo
 ```
 
 Save the downloaded firmware to a specific directory:
 
 ```sh
-python3 lvfs-dl.py -o ~/firmware "Dell Precision 3660"
+lvfs-dl -o ~/firmware "Dell Precision 3660"
 ```
 
 Force a metadata refresh (e.g. after a firmware update is published):
 
 ```sh
-python3 lvfs-dl.py --refresh "Dell Precision"
+lvfs-dl --refresh "Dell Precision"
 ```
 
 Interactive mode (query is prompted):
 
 ```sh
-python3 lvfs-dl.py
+lvfs-dl
 ```
 
 ### Search syntax
@@ -82,8 +88,8 @@ the package name, vendor, summary, or component ID.  The search is
 case-insensitive.
 
 ```sh
-python3 lvfs-dl.py "Dell BIOS"     # name/summary must contain both "dell" and "bios"
-python3 lvfs-dl.py "Lenovo UEFI"
+lvfs-dl "Dell BIOS"     # name/summary must contain both "dell" and "bios"
+lvfs-dl "Lenovo UEFI"
 ```
 
 ## How it works

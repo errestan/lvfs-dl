@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lvfs-dl"
+version = "1.0.0"
+description = "Browse and download firmware from the Linux Vendor Firmware Service (LVFS)."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "GPL-2.0-only"
+license-files = ["LICENSE"]
+authors = [{ name = "Lee" }]
+keywords = ["lvfs", "fwupd", "firmware", "appstream"]
+classifiers = [
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Topic :: System :: Hardware",
+]
+# Pure standard-library tool — no runtime dependencies.
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/youruser/lvfs-dl"
+Repository = "https://github.com/youruser/lvfs-dl"
+
+[project.scripts]
+lvfs-dl = "lvfs_dl:main"
+
+[tool.setuptools]
+py-modules = ["lvfs_dl"]
